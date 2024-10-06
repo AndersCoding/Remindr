@@ -8,14 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var dayTimeCheck: Bool = false
+    @State private var nightTimeCheck: Bool = false
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            HStack{
+                
+                Text("Day 1")
+                Spacer()
+                Button(action: {dayTimeCheck.toggle()}, label: {dayTimeCheck ? Image(systemName: "sun.max.fill") : Image(systemName: "sun.max")})
+                
+                Button(action: {nightTimeCheck.toggle()}, label: {nightTimeCheck ? Image(systemName: "moon.fill") : Image(systemName: "moon")})
+                
+                
+            }
         }
         .padding()
+    }
+}
+
+struct DayBox: View {
+    var body: some View {
+        /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
     }
 }
 

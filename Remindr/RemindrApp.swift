@@ -11,7 +11,7 @@ import SwiftUI
 struct RemindrApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DailyRemindr()
         }
     }
 }

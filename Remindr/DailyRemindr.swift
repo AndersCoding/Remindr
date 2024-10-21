@@ -6,55 +6,93 @@ struct DayInfo: Identifiable {
     var day: Int
     var dayTimeCheck: Bool
     var nightTimeCheck: Bool
+    var dayTimestamp: String?
+    var nightTimestamp: String?
 }
 
 struct DailyRemindr: View {
-    @State private var daily: [DayInfo] = [
-        DayInfo(day: 1, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_1"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_1")),
-        DayInfo(day: 2, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_2"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_2")),
-        DayInfo(day: 3, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_3"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_3")),
-        DayInfo(day: 4, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_4"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_4")),
-        DayInfo(day: 5, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_5"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_5")),
-        DayInfo(day: 6, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_6"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_6")),
-        DayInfo(day: 7, dayTimeCheck: UserDefaults.standard.bool(forKey: "dayTimeCheck_7"), nightTimeCheck: UserDefaults.standard.bool(forKey: "nightTimeCheck_7")),
-    ]
+    @State private var daily: [DayInfo] = {
+        // Load saved states and timestamps from UserDefaults
+        var days = [DayInfo]()
+        for i in 1...7 {
+            let dayTimeCheck = UserDefaults.standard.bool(forKey: "dayTimeCheck_\(i)")
+            let nightTimeCheck = UserDefaults.standard.bool(forKey: "nightTimeCheck_\(i)")
+            let dayTimestamp = UserDefaults.standard.string(forKey: "dayTimestamp_\(i)")
+            let nightTimestamp = UserDefaults.standard.string(forKey: "nightTimestamp_\(i)")
+            days.append(DayInfo(day: i, dayTimeCheck: dayTimeCheck, nightTimeCheck: nightTimeCheck, dayTimestamp: dayTimestamp, nightTimestamp: nightTimestamp))
+        }
+        return days
+    }()
     
     var body: some View {
-        VStack {
-            Text("Dosage dose")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            
-            ForEach($daily) { $day in // Using binding here
-                HStack {
-                    Spacer()
-                    Text("Day \(day.day)")
-                        .font(.title)
-                    Spacer()
-                    Button(action: {
-                        day.dayTimeCheck.toggle()
-                        UserDefaults.standard.set(day.dayTimeCheck, forKey: "dayTimeCheck_\(day.day)") // Save state
-                    }) {
-                        Image(systemName: day.dayTimeCheck ? "sun.max.fill" : "sun.max")
-                            .font(.system(size: 30))
+        ZStack
+        {
+            VStack {
+                Text("Dosage Log")
+                    .font(.title2) 
+                    .fontWeight(.bold)
+                
+                ForEach($daily) { $day in
+                    HStack {
+
+                        Spacer()
+                        Text("Day \(day.day)")
+                            .font(.headline)
+                        Spacer()
+                        Button(action: {
+                            day.dayTimeCheck.toggle()
+                            if day.dayTimeCheck {
+                                day.dayTimestamp = getCurrentTime()
+                                UserDefaults.standard.set(day.dayTimestamp, forKey: "dayTimestamp_\(day.day)")
+                            } else {
+                                day.dayTimestamp = nil
+                                UserDefaults.standard.removeObject(forKey: "dayTimestamp_\(day.day)")
+                            }
+                            UserDefaults.standard.set(day.dayTimeCheck, forKey: "dayTimeCheck_\(day.day)")
+                        }) {
+                            Image(systemName: day.dayTimeCheck ? "sun.max.fill" : "sun.max")
+                                .font(.system(size: 24))
+                        }
+                        Spacer()
+                        Text(day.dayTimestamp ?? "")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                        Spacer()
+                        Button(action: {
+                            day.nightTimeCheck.toggle()
+                            if day.nightTimeCheck {
+                                day.nightTimestamp = getCurrentTime()
+                                UserDefaults.standard.set(day.nightTimestamp, forKey: "nightTimestamp_\(day.day)")
+                            } else {
+                                day.nightTimestamp = nil
+                                UserDefaults.standard.removeObject(forKey: "nightTimestamp_\(day.day)")
+                            }
+                            UserDefaults.standard.set(day.nightTimeCheck, forKey: "nightTimeCheck_\(day.day)")
+                        }) {
+                            Image(systemName: day.nightTimeCheck ? "moon.fill" : "moon")
+                                .font(.system(size: 24))
+                        }
+                        Spacer()
+                        Text(day.nightTimestamp ?? "")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                        Spacer()
                     }
-                    Spacer()
-                    Button(action: {
-                        day.nightTimeCheck.toggle()
-                        UserDefaults.standard.set(day.nightTimeCheck, forKey: "nightTimeCheck_\(day.day)") // Save state
-                    }) {
-                        Image(systemName: day.nightTimeCheck ? "moon.fill" : "moon")
-                            .font(.system(size: 30))
-                    }
-                    Spacer()
+                    .frame(height: 20)
+                    Divider()
                 }
-                .frame(width: 350, height: 5) // Adjusted height for visibility
-                Divider()
+                .padding()
             }
-            .padding()
+            .navigationTitle("Daily Dose")
         }
-        .navigationTitle("Daily dose")
     }
+}
+
+// Function to get the current time as a string (only time)
+func getCurrentTime() -> String {
+    let formatter = DateFormatter()
+    formatter.timeStyle = .short
+    return formatter.string(from: Date())
 }
 
 #Preview {

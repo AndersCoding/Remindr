@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0D86A3122CC647AC001BC3B5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0D86A3112CC647AC001BC3B5 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		0DA8A5352CAD40CF00879FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D86A3112CC647AC001BC3B5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0DA8A5242CAD40C900879FDC /* Remindr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Remindr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA8A5342CAD40CF00879FDC /* RemindrTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RemindrTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DA8A53E2CAD40CF00879FDC /* RemindrUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RemindrUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +84,7 @@
 				0DA8A5372CAD40CF00879FDC /* RemindrTests */,
 				0DA8A5412CAD40CF00879FDC /* RemindrUITests */,
 				0DA8A5252CAD40C900879FDC /* Products */,
+				0D86A3112CC647AC001BC3B5 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D86A3122CC647AC001BC3B5 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
